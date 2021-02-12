@@ -27,7 +27,14 @@
     "rules": {
       "react-hooks/rules-of-hooks": "error",
       "prettier/prettier": "error",
+      "camelcase": "off",
       "react-hooks/exhaustive-deps": "warn",
+      "@typescript-eslint/explicit-function-return-type": [
+        "error",
+        {
+          "allowExpressions": true
+        }
+      ],
       "react/jsx-filename-extension": [
 	      1,
       	{
