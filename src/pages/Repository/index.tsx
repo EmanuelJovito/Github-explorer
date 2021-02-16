@@ -34,7 +34,7 @@ interface Issue {
 
 const Repository: React.FC = () => {
   const [repository, setRepository] = useState<Repository | null>(null)
-  const [issues, setIssus] = useState<Issue[]>([])
+  const [issues, setIssues] = useState<Issue[]>([])
 
   const { params } = useRouteMatch<RepositoryParams>()
 
@@ -44,7 +44,7 @@ const Repository: React.FC = () => {
     })
 
     api.get(`repos/${params.repository}/issues`).then(response => {
-      setIssus(response.data)
+      setIssues(response.data)
     })
   }, [params.repository])
 
