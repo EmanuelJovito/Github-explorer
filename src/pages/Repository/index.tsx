@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useRouteMatch, Link } from 'react-router-dom'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import api from '../../services/api'
@@ -34,19 +34,36 @@ interface Issue {
 
 const Repository: React.FC = () => {
   const [repository, setRepository] = useState<Repository | null>(null)
-  const [issues, setIssus] = useState<Issue[]>([])
+  const [issues, setIssues] = useState<Issue[]>([])
 
   const { params } = useRouteMatch<RepositoryParams>()
 
-  useEffect(() => {
-    api.get(`repos/${params.repository}`).then(response => {
-      setRepository(response.data)
-    })
+  const loadRepos = useCallback(async () => {
+    await api
+      .get(`repos/${params.repository}`)
+      .then(response => {
+        setRepository(response.data)
+      })
+      .catch(err => {
+        return console.log(err)
+      })
+  }, [params])
 
-    api.get(`repos/${params.repository}/issues`).then(response => {
-      setIssus(response.data)
-    })
-  }, [params.repository])
+  const loadIssues = useCallback(async () => {
+    await api
+      .get(`repos/${params.repository}/issues`)
+      .then(response => {
+        setIssues(response.data)
+      })
+      .catch(err => {
+        return console.log(err)
+      })
+  }, [params])
+
+  useEffect(() => {
+    loadRepos()
+    loadIssues()
+  }, [loadRepos, loadIssues])
 
   return (
     <>
